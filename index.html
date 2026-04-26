@@ -101,7 +101,6 @@
         }
         .btn-lavender:hover { transform: scale(1.05); letter-spacing: 3px; background: var(--lavender-glow); }
 
-        /* BACK BUTTON STYLE */
         .btn-back {
             background: transparent;
             color: var(--lavender);
@@ -153,6 +152,18 @@
             backdrop-filter: blur(15px); line-height: 1.9; border: 1px solid rgba(177, 156, 217, 0.2);
         }
         #essay-text { white-space: pre-line; color: rgba(230, 230, 250, 0.95); font-style: italic; font-weight: 300; font-size: 1.05rem; letter-spacing: 0.3px; }
+        
+        .closing-wish {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(250, 208, 221, 0.3);
+            color: var(--rose);
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body onclick="handleGlobalClick(event)">
@@ -180,11 +191,11 @@
     <section id="p2" class="page">
         <h1>Moments We Shared</h1>
         <div class="photo-wall">
-            	<img src="image1.jpeg" alt="Memory 1">
-        	<img src="image2.jpeg" alt="Memory 2">
-        	<img src="image3.jpeg" alt="Memory 3">
-        	<img src="image4.jpeg" alt="Memory 4">
-        	<img src="image5.jpeg" alt="Memory 5">
+            <img src="image1.jpeg" alt="Memory 1">
+            <img src="image2.jpeg" alt="Memory 2">
+            <img src="image3.jpeg" alt="Memory 3">
+            <img src="image4.jpeg" alt="Memory 4">
+            <img src="image5.jpeg" alt="Memory 5">
         </div>
         <button class="btn-lavender" onclick="nextPage(3)">Continue →</button>
         <button class="btn-back" onclick="nextPage(1)">← Back</button>
@@ -255,6 +266,11 @@
                 
                 Yours always,
                 Benjuu..
+
+                <div class="closing-wish">
+                    Once again, Happy Birthday! <br>
+                    Have a blessed year ahead. May all your dreams and wishes come true... and to many more years of togetherness! 🥂✨
+                </div>
             </div>
         </div>
         <button class="btn-lavender" onclick="nextPage(1)">Back to Start</button>
@@ -309,7 +325,6 @@
             const current = document.querySelector('.page.active');
             const next = document.getElementById('p' + num);
             
-            // Determine direction for animation effect
             const isGoingBack = parseInt(next.id.replace('p','')) < parseInt(current.id.replace('p',''));
             const moveOut = isGoingBack ? 1.1 : 0.9;
             const moveIn = isGoingBack ? 0.9 : 1.1;
@@ -319,9 +334,13 @@
                 next.classList.add('active');
                 gsap.fromTo(next, { opacity: 0, scale: moveIn }, { opacity: 1, scale: 1, duration: 0.6 });
                 
-                // Only trigger confetti if moving forward to these specific pages
                 if(!isGoingBack && (num === 2 || num === 4)) {
-                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#E6E6FA', '#B19CD9', '#FAD0DD', '#FFFFFF'] });
+                    confetti({ 
+                        particleCount: num === 4 ? 250 : 150, 
+                        spread: 80, 
+                        origin: { y: 0.6 }, 
+                        colors: ['#E6E6FA', '#B19CD9', '#FAD0DD', '#FFFFFF'] 
+                    });
                 }
             }});
         }
@@ -347,6 +366,11 @@
                 confetti({ particleCount: 8, startVelocity: 15, spread: 360, origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'], scalar: 0.5 });
             }
         }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>

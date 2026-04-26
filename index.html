@@ -35,9 +35,15 @@
     }
 
     @keyframes gradientSwirl {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     .page {
@@ -126,42 +132,53 @@
   <section id="p0" class="page active">
     <h1>Verification Required</h1>
     <p>Please enter the secret key to unlock this gift.</p>
+
     <input
       type="password"
       id="passwordField"
       class="pw-input"
       placeholder="Password..."
     >
+
     <p style="margin-top:10px; font-size:0.9rem;">
       Hint: Your boyfriend's first name
     </p>
-    <button class="btn" onclick="checkPassword()">Unlock</button>
+
+    <button class="btn" onclick="checkPassword()">
+      Unlock
+    </button>
   </section>
 
   <!-- BIRTHDAY PAGE -->
   <section id="p1" class="page">
     <h1>Happy 21st Birthday,<br>Ranju ❤️</h1>
-    <p>A dedicated space of light and color, kept here just for you.</p>
-    <button class="btn" onclick="nextPage(2)">Begin the Journey</button>
+    <p>
+      A dedicated space of light and color,
+      kept here just for you.
+    </p>
+
+    <button class="btn" onclick="nextPage(2)">
+      Begin the Journey
+    </button>
   </section>
 
   <!-- PHOTO PAGE -->
   <section id="p2" class="page">
     <h1>Moments We Shared</h1>
 
-    <!-- IMPORTANT: upload these images to GitHub -->
+    <!-- Corrected image names -->
     <div class="photo-wall">
-      <img src="image1.jpg" alt="Memory 1">
-      <img src="image2.jpg" alt="Memory 2">
-      <img src="image3.jpg" alt="Memory 3">
-      <img src="image4.jpg" alt="Memory 4">
-      <img src="image5.jpg" alt="Memory 5">
+      <img src="image1.jpeg" alt="Memory 1">
+      <img src="image2.jpeg" alt="Memory 2">
+      <img src="image3.jpeg" alt="Memory 3">
     </div>
 
-    <button class="btn" onclick="nextPage(3)">Continue</button>
+    <button class="btn" onclick="nextPage(3)">
+      Continue
+    </button>
   </section>
 
-  <!-- FINAL LETTER -->
+  <!-- FINAL LETTER PAGE -->
   <section id="p3" class="page">
     <div class="essay-box">
       <h2>To the love of my life,</h2>
@@ -195,7 +212,9 @@
       </p>
     </div>
 
-    <button class="btn" onclick="nextPage(1)">Back to Start</button>
+    <button class="btn" onclick="nextPage(1)">
+      Back to Start
+    </button>
   </section>
 
   <script>
@@ -211,6 +230,7 @@
           particleCount: 150,
           spread: 80
         });
+
         nextPage(1);
       } else {
         alert("Wrong password ❤️ Try again");
@@ -231,7 +251,7 @@
 
     document
       .getElementById("passwordField")
-      .addEventListener("keypress", function(e) {
+      .addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
           checkPassword();
         }

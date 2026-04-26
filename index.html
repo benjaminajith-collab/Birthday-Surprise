@@ -56,7 +56,6 @@
             margin-bottom: 20px;
         }
 
-        /* Input Styles */
         .pw-input {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--lavender-glow);
@@ -71,7 +70,6 @@
             width: 250px;
         }
 
-        /* Countdown Display */
         #countdown-container {
             display: none;
             margin-top: 30px;
@@ -89,10 +87,7 @@
             margin-top: 15px;
         }
 
-        .timer-block {
-            display: flex;
-            flex-direction: column;
-        }
+        .timer-block { display: flex; flex-direction: column; }
 
         .timer-val {
             font-size: 2rem;
@@ -117,7 +112,6 @@
             font-style: italic;
         }
 
-        /* Buttons */
         .btn-lavender {
             background: linear-gradient(135deg, var(--lavender-deep), #5e4b8d); 
             color: white; border: none;
@@ -135,7 +129,6 @@
             margin-top: 15px; transition: 0.3s;
         }
 
-        /* Content Sections */
         .photo-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 900px; width: 100%; }
         .photo-wall img { width: calc(30% - 15px); aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); }
         
@@ -171,8 +164,8 @@
             <p>Please enter the secret key to unlock this gift.</p>
             <input type="password" id="passwordField" class="pw-input" placeholder="Password..." autocomplete="off">
             <div id="error-msg"></div>
-            <p class="hint" id="login-hint">Hint: Your boyfriend's first name</p>
-            <button class="btn-lavender" id="unlock-btn" onclick="checkPassword()">Unlock</button>
+            <p class="hint">Hint: Your boyfriend's first name</p>
+            <button class="btn-lavender" onclick="checkPassword()">Unlock</button>
         </div>
 
         <div id="countdown-container">
@@ -184,12 +177,11 @@
                 <div class="timer-block"><span class="timer-val" id="mins">00</span><span class="timer-label">Mins</span></div>
                 <div class="timer-block"><span class="timer-val" id="secs">00</span><span class="timer-label">Secs</span></div>
             </div>
-            <p class="hint" style="margin-top: 20px;">I'll see you on May 20th! ❤️</p>
         </div>
     </section>
 
     <section id="p1" class="page">
-        <p style="letter-spacing: 10px; color: var(--rose); margin-bottom: 20px; text-transform: uppercase; font-size: 0.7rem;">MAY 20, 2026</p>
+        <p style="letter-spacing: 10px; color: var(--rose); margin-bottom: 20px; text-transform: uppercase; font-size: 0.7rem;">APRIL 26, 2026</p>
         <h1>Happy 21st Birthday,<br>Ranju</h1>
         <p style="margin-top: 20px; font-style: italic; font-family: 'Playfair Display', serif; max-width: 450px;">A dedicated space of light and color, kept here just for you.</p>
         <button class="btn-lavender" onclick="nextPage(2)">Begin the Journey</button>
@@ -198,11 +190,8 @@
     <section id="p2" class="page">
         <h1>Moments We Shared</h1>
         <div class="photo-wall">
-            <img src="image1.jpeg" alt="Memory 1">
-            <img src="image2.jpeg" alt="Memory 2">
-            <img src="image3.jpeg" alt="Memory 3">
-            <img src="image4.jpeg" alt="Memory 4">
-            <img src="image5.jpeg" alt="Memory 5">
+            <img src="image1.jpeg" alt="Memory 1"><img src="image2.jpeg" alt="Memory 2"><img src="image3.jpeg" alt="Memory 3">
+            <img src="image4.jpeg" alt="Memory 4"><img src="image5.jpeg" alt="Memory 5">
         </div>
         <button class="btn-lavender" onclick="nextPage(3)">Continue →</button>
         <button class="btn-back" onclick="nextPage(1)">← Back</button>
@@ -225,31 +214,29 @@
 
     <section id="p4" class="page">
         <div class="essay-box">
-            <h2 style="font-family: 'Playfair Display'; margin-bottom: 25px; color: var(--rose); font-style: italic;">To the love of my life,</h2>
+            <h2 style="font-family: 'Playfair Display'; color: var(--rose); font-style: italic;">To the love of my life,</h2>
             <div id="essay-text">
                 Happy 21st Birthday. 
                 
-                Eda enick sherikkum ith kore koode better aayitt cheyyanam aenn ondaarn but like enick exams inte okke therakk aayond aahn enick ith athra nice aayitt cheyyan pattathe… athond ith nyan kore okke ai itt aahn cheythe aake korch text um images um mathre nyan upload cheythollu.. anyways nyan karyathileck varam..
+                Eda enick sherikkum ith kore koode better aayitt cheyyanam aenn ondaarn but like enick exams inte okke therakk aayond aahn enick ith athra nice aayitt cheyyan pattathe… athond ith nyan kore okke ai itt aahn cheythe...
 
-                Happiest Birthday my love.. thank you for always being with me throughout and always supporting me through my hardships.. every good morning text from you every good night text and every single text really makes me feel soo happy.. thank you for coming into my life.. you are really the most caring and loving person I feel soo safe when im with you.. I love everything about you love every single thing about you kunjaa..
-
-                I really don’t know what else to say genuinely idk how to express it.. I rlly hope you liked this and I really hope youre happy.. Always stay happy and be urself luv.. ummaaaaaaaa 🥹🥹🥹…
+                Happiest Birthday my love.. thank you for always being with me... ummaaaaaaaa 🥹🥹🥹…
 
                 Yours always,
                 Benjuu..
 
                 <div class="closing-wish">
                     Once again, Happy Birthday! <br>
-                    Have a blessed year ahead. May all your dreams and wishes come true... and to many more years of togetherness! 🥂✨
+                    Have a blessed year ahead. ✨
                 </div>
             </div>
         </div>
         <button class="btn-lavender" onclick="nextPage(1)">Back to Start</button>
-        <button class="btn-back" onclick="nextPage(3)">← Back</button>
     </section>
 
     <script>
-        const targetDate = new Date("May 20, 2026 00:00:00").getTime();
+        // TEST DATE: Set to 12:20 PM Today (April 26, 2026)
+        const targetDate = new Date("April 26, 2026 12:20:00").getTime();
         let timerInterval;
 
         function checkPassword() {
@@ -259,23 +246,19 @@
             
             if (input === 'benjamin') {
                 if (now < targetDate) {
-                    // CORRECT PASS BUT TOO EARLY
                     gsap.to("#login-content", { opacity: 0, y: -20, duration: 0.5, onComplete: () => {
                         document.getElementById('login-content').style.display = 'none';
-                        const container = document.getElementById('countdown-container');
-                        container.style.display = 'block';
-                        gsap.fromTo(container, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+                        document.getElementById('countdown-container').style.display = 'block';
+                        gsap.fromTo("#countdown-container", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
                         startCountdown();
                     }});
                 } else {
-                    // BIRTHDAY ARRIVED!
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                     nextPage(1);
                 }
             } else {
-                // WRONG PASS
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
-                errorDisplay.innerText = "Nice try, but that's not it! 😂";
+                errorDisplay.innerText = "Wrong password! 😂";
                 gsap.to(errorDisplay, { opacity: 1, duration: 0.3 });
             }
         }
@@ -284,44 +267,30 @@
             timerInterval = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
-
-                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("days").innerText = d.toString().padStart(2, '0');
-                document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-                document.getElementById("mins").innerText = m.toString().padStart(2, '0');
-                document.getElementById("secs").innerText = s.toString().padStart(2, '0');
-
                 if (distance < 0) {
                     clearInterval(timerInterval);
-                    location.reload(); // Refresh to unlock
+                    location.reload(); 
+                    return;
                 }
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("secs").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
             }, 1000);
         }
 
         function nextPage(num) {
             const current = document.querySelector('.page.active');
             const next = document.getElementById('p' + num);
-            const isGoingBack = parseInt(next.id.replace('p','')) < parseInt(current.id.replace('p',''));
-            
-            gsap.to(current, { opacity: 0, scale: isGoingBack ? 1.1 : 0.9, duration: 0.5, onComplete: () => {
+            gsap.to(current, { opacity: 0, duration: 0.5, onComplete: () => {
                 current.classList.remove('active');
                 next.classList.add('active');
-                gsap.fromTo(next, { opacity: 0, scale: isGoingBack ? 0.9 : 1.1 }, { opacity: 1, scale: 1, duration: 0.6 });
-                if(!isGoingBack && (num === 1 || num === 4)) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                gsap.fromTo(next, { opacity: 0 }, { opacity: 1, duration: 0.6 });
             }});
         }
 
-        function flipCard(card) {
-            if(card.classList.toggle('flipped')) {
-                confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#FAD0DD', '#B19CD9'] });
-            }
-        }
+        function flipCard(card) { card.classList.toggle('flipped'); }
 
-        // Particle Background
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -340,12 +309,11 @@
 
         function handleGlobalClick(e) {
             if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card')) {
-                confetti({ particleCount: 8, startVelocity: 15, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'] });
+                confetti({ particleCount: 8, startVelocity: 15, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
             }
         }
 
         document.getElementById('passwordField').addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     </script>
 </body>
 </html>

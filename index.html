@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Private Space | For Ranjana</title>
 
+  <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;600&display=swap" rel="stylesheet">
 
   <style>
@@ -70,6 +73,11 @@
       margin-bottom: 20px;
     }
 
+    h2 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 10px;
+    }
+
     .pw-input {
       background: rgba(255,255,255,0.1);
       border: 1px solid var(--lavender-glow);
@@ -104,7 +112,8 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      max-width: 900px;
+      max-width: 1000px;
+      margin-top: 20px;
     }
 
     .photo-wall img {
@@ -123,14 +132,16 @@
       border-radius: 20px;
       line-height: 1.8;
       text-align: left;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
   </style>
 </head>
 <body>
 
-  <!-- PASSWORD PAGE -->
+  <!-- PAGE 0 : PASSWORD -->
   <section id="p0" class="page active">
     <h1>Verification Required</h1>
+
     <p>Please enter the secret key to unlock this gift.</p>
 
     <input
@@ -140,7 +151,7 @@
       placeholder="Password..."
     >
 
-    <p style="margin-top:10px; font-size:0.9rem;">
+    <p style="margin-top: 10px; font-size: 0.9rem;">
       Hint: Your boyfriend's first name
     </p>
 
@@ -149,11 +160,13 @@
     </button>
   </section>
 
-  <!-- BIRTHDAY PAGE -->
+
+  <!-- PAGE 1 : BIRTHDAY -->
   <section id="p1" class="page">
     <h1>Happy 21st Birthday,<br>Ranju ❤️</h1>
+
     <p>
-      A dedicated space of light and color,
+      A dedicated space of light and color,<br>
       kept here just for you.
     </p>
 
@@ -162,15 +175,17 @@
     </button>
   </section>
 
-  <!-- PHOTO PAGE -->
+
+  <!-- PAGE 2 : PHOTOS -->
   <section id="p2" class="page">
     <h1>Moments We Shared</h1>
 
-    <!-- Corrected image names -->
     <div class="photo-wall">
       <img src="image1.jpeg" alt="Memory 1">
       <img src="image2.jpeg" alt="Memory 2">
       <img src="image3.jpeg" alt="Memory 3">
+      <img src="image4.jpeg" alt="Memory 4">
+      <img src="image5.jpeg" alt="Memory 5">
     </div>
 
     <button class="btn" onclick="nextPage(3)">
@@ -178,11 +193,11 @@
     </button>
   </section>
 
-  <!-- FINAL LETTER PAGE -->
+
+  <!-- PAGE 3 : FINAL LETTER -->
   <section id="p3" class="page">
     <div class="essay-box">
       <h2>To the love of my life,</h2>
-      <br>
 
       <p>
         Happy 21st Birthday.
@@ -217,6 +232,7 @@
     </button>
   </section>
 
+
   <script>
     function checkPassword() {
       const input = document
@@ -237,14 +253,14 @@
       }
     }
 
-    function nextPage(num) {
+    function nextPage(pageNumber) {
       document
         .querySelector(".page.active")
         .classList
         .remove("active");
 
       document
-        .getElementById("p" + num)
+        .getElementById("p" + pageNumber)
         .classList
         .add("active");
     }

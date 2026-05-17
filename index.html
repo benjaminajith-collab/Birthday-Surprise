@@ -102,11 +102,16 @@
             text-transform: uppercase; font-size: 0.7rem;
             flex-shrink: 0;
         }
-        .btn-lavender:hover {
+        .btn-lavender:hover:not(:disabled) {
             background: white;
             color: var(--dark);
             border-color: white;
             box-shadow: 0 10px 25px rgba(230, 230, 250, 0.2);
+        }
+        .btn-lavender:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: rgba(230, 230, 250, 0.1);
         }
 
         .btn-back {
@@ -118,6 +123,36 @@
             z-index: 10;
         }
         .btn-back:hover { opacity: 0.9; }
+
+        /* --- COUNTDOWN DISPLAY --- */
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(177, 156, 217, 0.15);
+            padding: 15px;
+            border-radius: 16px;
+            min-width: 75px;
+            backdrop-filter: blur(5px);
+        }
+        .countdown-num {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--rose);
+            display: block;
+        }
+        .countdown-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            margin-top: 5px;
+            display: block;
+        }
 
         /* --- INTERACTIVE CAROUSEL VIEW --- */
         .viewer-container {
@@ -352,6 +387,21 @@
         </div>
     </section>
 
+    <!-- P_COUNTDOWN: THE SUSPENSE COUNTDOWN HOLDING SCREEN -->
+    <section id="p_countdown" class="page">
+        <p style="font-size: 0.65rem; opacity: 0.5; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 5px;">patience, my angel...</p>
+        <h1>the countdown to your day</h1>
+        
+        <div class="countdown-container">
+            <div class="countdown-box"><span class="countdown-num" id="cd-days">00</span><span class="countdown-label">Days</span></div>
+            <div class="countdown-box"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">Hrs</span></div>
+            <div class="countdown-box"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-label">Mins</span></div>
+            <div class="countdown-box"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-label">Secs</span></div>
+        </div>
+
+        <button class="btn-lavender" id="countdown-btn" onclick="nextPage(1)" disabled>Locked Until May 20th</button>
+    </section>
+
     <!-- P1: WELCOME SCREEN -->
     <section id="p1" class="page">
         <p style="letter-spacing: 8px; color: var(--rose); margin-bottom: 15px; text-transform: uppercase; font-size: 0.65rem; font-weight: 500;">MAY 20, 2026</p>
@@ -494,6 +544,10 @@
         let currentPhotoIndex = 0;
         const totalPhotos = 8;
         let coverOpened = false;
+        let countdownInterval;
+
+        // Target Date: May 20, 2026 Midnight Local Time
+        const targetDate = new Date('May 20, 2026 00:00:00').getTime();
 
         // --- PASSWORD GATE CHECK ---
         function checkPassword() {
@@ -502,7 +556,15 @@
             
             if (input === 'benjamin') {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                nextPage(1);
+                
+                // Determine whether to route to the Countdown or directly to Welcome page
+                const now = new Date().getTime();
+                if (targetDate - now > 0) {
+                    startCountdownEngine();
+                    nextPage('_countdown');
+                } else {
+                    nextPage(1);
+                }
             } else {
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Please try again.";
@@ -510,11 +572,52 @@
             }
         }
 
+        // --- COUNTDOWN TIMING CONTROLLER ---
+        function startCountdownEngine() {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('cd-days').innerText = "00";
+                    document.getElementById('cd-hours').innerText = "00";
+                    document.getElementById('cd-mins').innerText = "00";
+                    document.getElementById('cd-secs').innerText = "00";
+                    
+                    const unlockBtn = document.getElementById('countdown-btn');
+                    unlockBtn.removeAttribute('disabled');
+                    unlockBtn.innerText = "Unlock Your Birthday ✨";
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+            }
+
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
         // --- PAGE TRANSITIONS ---
         function nextPage(num) {
             const current = document.querySelector('.page.active');
             const next = document.getElementById('p' + num);
-            const isGoingBack = parseInt(next.id.replace('p','')) < parseInt(current.id.replace('p',''));
+            
+            // Basic direction check for sizing transforms
+            let isGoingBack = false;
+            if(current.id === 'p2' && num === 1) isGoingBack = true;
+            if(current.id === 'p3' && num === 2) isGoingBack = true;
+            if(current.id === 'p4' && num === 3) isGoingBack = true;
             
             gsap.to(current, { opacity: 0, scale: isGoingBack ? 1.05 : 0.95, duration: 0.5, onComplete: () => {
                 current.classList.remove('active');

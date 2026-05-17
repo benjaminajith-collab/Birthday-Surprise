@@ -7,7 +7,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -56,9 +56,79 @@
             margin-bottom: 20px;
         }
 
+        /* --- AESTHETIC GLASSMORPHIC COUNTDOWN OVERLAY --- */
+        #countdown-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(31, 16, 48, 0.98) 0%, rgba(15, 12, 19, 1) 100%);
+            z-index: 9999;
+            display: none; /* Controlled via JS after login */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .timer-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(177, 156, 217, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            min-width: 90px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 
+                        inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .time-num {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            color: var(--rose);
+            display: block;
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(250, 208, 221, 0.4);
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            margin-top: 8px;
+            display: block;
+            font-weight: 400;
+        }
+
+        .timer-separator {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--lavender-glow);
+            margin: 0 12px;
+            opacity: 0.5;
+            animation: pulse 1.5s infinite alternate;
+            padding-bottom: 25px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.7; }
+        }
+
         /* Input Styles */
         .pw-input {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--lavender-glow);
             padding: 15px 25px;
             border-radius: 15px;
@@ -69,6 +139,7 @@
             outline: none;
             transition: 0.3s;
             width: 250px;
+            box-shadow: inset 0 0 10px rgba(177, 156, 217, 0.1);
         }
 
         #error-msg {
@@ -134,7 +205,6 @@
             cursor: pointer;
         }
 
-        /* Individual faces of each page */
         .page-front, .page-back {
             position: absolute;
             width: 100%;
@@ -150,82 +220,19 @@
             border-radius: 0 15px 15px 0;
         }
 
-        /* Front cover specific image settings */
-        .page-front.album-cover {
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            padding: 0;
-        }
+        .page-front.album-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
+        .page-back.album-back-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
 
-        /* Back cover specific image settings */
-        .page-back.album-back-cover {
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            padding: 0;
-        }
+        .cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 0 13px 13px 0; }
+        .back-cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 13px 0 0 13px; }
 
-        /* Semi-transparent dark overlay layer to make text readable over the background images */
-        .cover-overlay {
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 12, 19, 0.55); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0 13px 13px 0;
-        }
+        .page-back { transform: rotateY(180deg); border-radius: 15px 0 0 15px; background: linear-gradient(135deg, #10081d, #1e1530); }
+        .page-front::after { content: ''; position: absolute; left: 0; top: 0; width: 10px; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.5), transparent); }
+        .page-back::after { content: ''; position: absolute; right: 0; top: 0; width: 10px; height: 100%; background: linear-gradient(to left, rgba(0,0,0,0.5), transparent); }
 
-        /* Adjust border radius for the back cover overlay layer so it aligns correctly */
-        .back-cover-overlay {
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 12, 19, 0.55); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 13px 0 0 13px;
-        }
-
-        /* Back faces turn around and anchor left */
-        .page-back {
-            transform: rotateY(180deg);
-            border-radius: 15px 0 0 15px;
-            background: linear-gradient(135deg, #10081d, #1e1530);
-        }
-
-        /* Book spine shade line */
-        .page-front::after {
-            content: ''; position: absolute; left: 0; top: 0; width: 10px; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
-        }
-        .page-back::after {
-            content: ''; position: absolute; right: 0; top: 0; width: 10px; height: 100%;
-            background: linear-gradient(to left, rgba(0,0,0,0.5), transparent);
-        }
-
-        .book-page img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        /* Flipped state logic handled via JS classes */
-        .book-page.flipped {
-            transform: rotateY(-180deg);
-        }
-
-        /* Center details text style */
-        .cover-title {
-            font-family: 'Playfair Display', serif;
-            color: var(--rose);
-            font-size: 1.8rem;
-            padding: 20px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-            z-index: 2;
-        }
+        .book-page img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+        .book-page.flipped { transform: rotateY(-180deg); }
+        .cover-title { font-family: 'Playfair Display', serif; color: var(--rose); font-size: 1.8rem; padding: 20px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); z-index: 2; }
 
         /* --- REASONS & CARDS --- */
         .reasons-container { display: flex; gap: 30px; overflow-x: auto; width: 100vw; max-width: 1200px; padding: 40px; scrollbar-width: none; perspective: 1000px; }
@@ -252,21 +259,37 @@
 </head>
 <body onclick="handleGlobalClick(event)">
 
-    <canvas id="particle-canvas"></canvas>
-
-    <!-- P0: LOGIN -->
+    <!-- P0: LOGIN GATE (NOW FIRST STEP) -->
     <section id="p0" class="page active">
         <div id="login-content">
-            <h1 style="font-size: 1.5rem; opacity: 0.8;">Verification Required</h1>
-            <p>Please enter the secret key to unlock this gift.</p>
+            <h1 style="font-size: 1.5rem; opacity: 0.8; font-family:'Playfair Display', serif; letter-spacing: 2px;">A Private Space</h1>
+            <p style="font-size: 0.9rem; opacity: 0.7;">Please enter the secret key to access this gift.</p>
             <input type="password" id="passwordField" class="pw-input" placeholder="Password..." autocomplete="off">
             <div id="error-msg"></div>
-            <p class="hint" id="login-hint">Hint: Your boyfriend's first name</p>
+            <p class="hint" style="font-size: 0.75rem; opacity: 0.4; margin-top: 10px;" id="login-hint">Hint: Your boyfriend's first name</p>
             <button class="btn-lavender" id="unlock-btn" onclick="checkPassword()">Unlock</button>
         </div>
     </section>
 
-    <!-- P1: WELCOME -->
+    <!-- AESTHETIC COUNTDOWN SCREEN (SHOWS ONLY IF TIMELINE IS BEFORE MAY 20) -->
+    <div id="countdown-overlay">
+        <p style="letter-spacing: 7px; color: var(--lavender-glow); text-transform: uppercase; font-size: 0.75rem; margin-bottom: 12px; font-weight: 600;">Counting Down</p>
+        <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(1.5rem, 4vw, 2.2rem); max-width: 500px; font-style: italic;">A beautiful space is unlocking soon...</h2>
+        
+        <div class="timer-wrapper">
+            <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">Days</span></div>
+            <div class="timer-separator">:</div>
+            <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">Hours</span></div>
+            <div class="timer-separator">:</div>
+            <div class="time-box"><span class="time-num" id="minutes">00</span><span class="time-label">Mins</span></div>
+            <div class="timer-separator">:</div>
+            <div class="time-box"><span class="time-num" id="seconds">00</span><span class="time-label">Secs</span></div>
+        </div>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- P1: WELCOME SCREEN -->
     <section id="p1" class="page">
         <p style="letter-spacing: 10px; color: var(--rose); margin-bottom: 20px; text-transform: uppercase; font-size: 0.7rem;">MAY 20, 2026</p>
         <h1>Happy 21st Birthday,<br>My Loveeee...</h1>
@@ -282,7 +305,7 @@
         <div class="magazine-wrapper">
             <div class="book" id="magazine">
                 
-                <!-- Page 1 (Front Cover Image 9) -->
+                <!-- Page 1 -->
                 <div class="book-page" style="z-index: 5;" onclick="turnPage(this, 1)">
                     <div class="page-front album-cover" style="background-image: url('image9.jpeg');">
                         <div class="cover-overlay">
@@ -294,7 +317,7 @@
                     </div>
                 </div>
 
-                <!-- Page 2 (Image 2 / Image 3) -->
+                <!-- Page 2 -->
                 <div class="book-page" style="z-index: 4;" onclick="turnPage(this, 2)">
                     <div class="page-front">
                         <img src="image2.jpeg" alt="Memory 2">
@@ -304,7 +327,7 @@
                     </div>
                 </div>
 
-                <!-- Page 3 (Image 4 / Image 5) -->
+                <!-- Page 3 -->
                 <div class="book-page" style="z-index: 3;" onclick="turnPage(this, 3)">
                     <div class="page-front">
                         <img src="image4.jpeg" alt="Memory 4">
@@ -314,7 +337,7 @@
                     </div>
                 </div>
 
-                <!-- Page 4 (Image 6 / Image 7) -->
+                <!-- Page 4 -->
                 <div class="book-page" style="z-index: 2;" onclick="turnPage(this, 4)">
                     <div class="page-front">
                         <img src="image6.jpeg" alt="Memory 6">
@@ -324,7 +347,7 @@
                     </div>
                 </div>
 
-                <!-- Page 5 (Image 8 / End Cover with image10.jpeg Background) -->
+                <!-- Page 5 -->
                 <div class="book-page" style="z-index: 1;" onclick="turnPage(this, 5)">
                     <div class="page-front">
                         <img src="image8.jpeg" alt="Memory 8">
@@ -383,47 +406,31 @@
     </section>
 
     <script>
-        // --- MAGAZINE CONTROL LOGIC ---
-        function turnPage(pageElement, pageNum) {
-            const book = document.getElementById('magazine');
-            
-            if (!pageElement.classList.contains('flipped')) {
-                // Flip Forward (Leftward movement)
-                pageElement.classList.add('flipped');
-                
-                // Adjust z-indexing immediately after flip so layers don't clip through
-                setTimeout(() => {
-                    pageElement.style.zIndex = pageNum;
-                }, 150);
+        const targetDate = new Date("May 20, 2026 00:00:00").getTime();
+        let countdownInterval;
+        let isUnlocked = false;
 
-                // Center shifts when book opens or moves deeper
-                if(pageNum === 1) {
-                    book.style.transform = "translateX(0%)";
-                }
-            } else {
-                // Flip Backward (Rightward movement)
-                pageElement.classList.remove('flipped');
-                
-                // Return index priority when closing back over
-                setTimeout(() => {
-                    pageElement.style.zIndex = 10 - pageNum;
-                }, 150);
-
-                if(pageNum === 1) {
-                    book.style.transform = "translateX(25%)";
-                }
-            }
-            // Trigger quick cute burst on page turn
-            confetti({ particleCount: 15, spread: 40, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
-        }
-
+        // --- PASSWORD CHECK & INITIALIZATION ---
         function checkPassword() {
             const input = document.getElementById('passwordField').value.toLowerCase().trim();
             const errorDisplay = document.getElementById('error-msg');
             
             if (input === 'benjamin') {
+                isUnlocked = true;
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                nextPage(1);
+                
+                // Check if target date has been reached
+                const now = new Date().getTime();
+                if (targetDate - now > 0) {
+                    // Activate and fade-in countdown screen
+                    const overlay = document.getElementById("countdown-overlay");
+                    overlay.style.display = "flex";
+                    setTimeout(() => { overlay.style.opacity = "1"; }, 50);
+                    startCountdown();
+                } else {
+                    // Bypass countdown screen entirely, go straight to welcome card
+                    nextPage(1);
+                }
             } else {
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Nice try, but that's not it! 😂";
@@ -431,6 +438,39 @@
             }
         }
 
+        // --- COUNTDOWN LIVE PROCESSING ---
+        function startCountdown() {
+            updateCountdownValues(); // Fire immediately
+            countdownInterval = setInterval(updateCountdownValues, 1000);
+        }
+
+        function updateCountdownValues() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(d).padStart(2, '0');
+            document.getElementById("hours").innerText = String(h).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(m).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(s).padStart(2, '0');
+
+            if (difference <= 0) {
+                clearInterval(countdownInterval);
+                const overlay = document.getElementById("countdown-overlay");
+                overlay.style.opacity = "0";
+                setTimeout(() => {
+                    overlay.style.visibility = "hidden";
+                    overlay.style.display = "none";
+                    nextPage(1); // Safely auto-advance into landing panel
+                }, 800);
+            }
+        }
+
+        // --- PAGE TRANSITIONS ---
         function nextPage(num) {
             const current = document.querySelector('.page.active');
             const next = document.getElementById('p' + num);
@@ -444,13 +484,28 @@
              }});
         }
 
+        // --- BOOK CONTROL LOGIC ---
+        function turnPage(pageElement, pageNum) {
+            const book = document.getElementById('magazine');
+            if (!pageElement.classList.contains('flipped')) {
+                pageElement.classList.add('flipped');
+                setTimeout(() => { pageElement.style.zIndex = pageNum; }, 150);
+                if(pageNum === 1) { book.style.transform = "translateX(0%)"; }
+            } else {
+                pageElement.classList.remove('flipped');
+                setTimeout(() => { pageElement.style.zIndex = 10 - pageNum; }, 150);
+                if(pageNum === 1) { book.style.transform = "translateX(25%)"; }
+            }
+            confetti({ particleCount: 15, spread: 40, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
+        }
+
         function flipCard(card) {
             if(card.classList.toggle('flipped')) {
                 confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 }, colors: ['#FAD0DD', '#B19CD9'] });
             }
         }
 
-        // Particle Background
+        // Particle Ambient Engine
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -468,6 +523,8 @@
         animate();
 
         function handleGlobalClick(e) {
+            const overlay = document.getElementById('countdown-overlay');
+            if (overlay.style.display === 'flex') return; // Restrict sparkles on timer page
             if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card') && !e.target.closest('.book-page')) {
                 confetti({ particleCount: 8, startVelocity: 15, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'] });
             }

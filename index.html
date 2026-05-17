@@ -88,6 +88,7 @@
             font-weight: 600; letter-spacing: 2px; transition: 0.4s; margin-top: 20px;
             text-transform: uppercase; font-size: 0.75rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
         }
 
         .btn-back {
@@ -96,12 +97,98 @@
             padding: 8px 20px; border-radius: 50px; cursor: pointer;
             font-size: 0.65rem; text-transform: uppercase;
             margin-top: 15px; transition: 0.3s;
+            z-index: 10;
         }
 
-        /* Content Sections */
-        .photo-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 900px; width: 100%; }
-        .photo-wall img { width: calc(30% - 15px); aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1); }
-        
+        /* --- MAGAZINE BOOK STYLES --- */
+        .magazine-wrapper {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 800px;
+            height: 50vh;
+            max-height: 500px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book {
+            position: relative;
+            width: 50%; /* Single page width, book spans out from center */
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            /* Shifts entire book slightly right so center fold aligns beautifully */
+            transform: translateX(25%); 
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.8s;
+            cursor: pointer;
+        }
+
+        /* Individual faces of each page */
+        .page-front, .page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: linear-gradient(135deg, #1e1530, #10081d);
+            border: 2px solid rgba(177, 156, 217, 0.3);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 5px 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 0 15px 15px 0;
+        }
+
+        /* Back faces turn around and anchor left */
+        .page-back {
+            transform: rotateY(180deg);
+            border-radius: 15px 0 0 15px;
+            background: linear-gradient(135deg, #10081d, #1e1530);
+        }
+
+        /* Book spine shade line */
+        .page-front::after {
+            content: ''; position: absolute; left: 0; top: 0; width: 10px; height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
+        }
+        .page-back::after {
+            content: ''; position: absolute; right: 0; top: 0; width: 10px; height: 100%;
+            background: linear-gradient(to left, rgba(0,0,0,0.5), transparent);
+        }
+
+        .book-page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Flipped state logic handled via JS classes */
+        .book-page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* Center details text style */
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--rose);
+            font-size: 1.8rem;
+            padding: 20px;
+        }
+
+        /* --- REASONS & CARDS --- */
         .reasons-container { display: flex; gap: 30px; overflow-x: auto; width: 100vw; max-width: 1200px; padding: 40px; scrollbar-width: none; perspective: 1000px; }
         .card { min-width: 260px; height: 360px; position: relative; cursor: pointer; transform-style: preserve-3d; transition: 0.6s; }
         .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: 0.8s; }
@@ -128,6 +215,7 @@
 
     <canvas id="particle-canvas"></canvas>
 
+    <!-- P0: LOGIN -->
     <section id="p0" class="page active">
         <div id="login-content">
             <h1 style="font-size: 1.5rem; opacity: 0.8;">Verification Required</h1>
@@ -139,6 +227,7 @@
         </div>
     </section>
 
+    <!-- P1: WELCOME -->
     <section id="p1" class="page">
         <p style="letter-spacing: 10px; color: var(--rose); margin-bottom: 20px; text-transform: uppercase; font-size: 0.7rem;">MAY 20, 2026</p>
         <h1>Happy 21st Birthday,<br>Ranju</h1>
@@ -146,22 +235,72 @@
         <button class="btn-lavender" onclick="nextPage(2)">Begin the Journey</button>
     </section>
 
+    <!-- P2: MAGAZINE BOOK BLOCK -->
     <section id="p2" class="page">
         <h1>Moments We Shared</h1>
-        <div class="photo-wall">
-            <img src="image1.jpeg" alt="Memory 1">
-            <img src="image2.jpeg" alt="Memory 2">
-            <img src="image3.jpeg" alt="Memory 3">
-            <img src="image4.jpeg" alt="Memory 4">
-            <img src="image5.jpeg" alt="Memory 5">
-	    <img src="image6.jpeg" alt="Memory 6">
-            <img src="image7.jpeg" alt="Memory 7">
-            <img src="image8.jpeg" alt="Memory 8">
+        <p style="font-size: 0.8rem; opacity: 0.7; font-style: italic; margin-bottom: 10px;">Tap pages to flip through</p>
+        
+        <div class="magazine-wrapper">
+            <div class="book" id="magazine">
+                
+                <!-- Page 1 (Cover / Image 1) -->
+                <div class="book-page" style="z-index: 5;" onclick="turnPage(this, 1)">
+                    <div class="page-front">
+                        <div class="cover-title">Our Album<br><span style="font-size:1rem; opacity:0.6;">✨ Tap to Open ✨</span></div>
+                    </div>
+                    <div class="page-back">
+                        <img src="image1.jpeg" alt="Memory 1">
+                    </div>
+                </div>
+
+                <!-- Page 2 (Image 2 / Image 3) -->
+                <div class="book-page" style="z-index: 4;" onclick="turnPage(this, 2)">
+                    <div class="page-front">
+                        <img src="image2.jpeg" alt="Memory 2">
+                    </div>
+                    <div class="page-back">
+                        <img src="image3.jpeg" alt="Memory 3">
+                    </div>
+                </div>
+
+                <!-- Page 3 (Image 4 / Image 5) -->
+                <div class="book-page" style="z-index: 3;" onclick="turnPage(this, 3)">
+                    <div class="page-front">
+                        <img src="image4.jpeg" alt="Memory 4">
+                    </div>
+                    <div class="page-back">
+                        <img src="image5.jpeg" alt="Memory 5">
+                    </div>
+                </div>
+
+                <!-- Page 4 (Image 6 / Image 7) -->
+                <div class="book-page" style="z-index: 2;" onclick="turnPage(this, 4)">
+                    <div class="page-front">
+                        <img src="image6.jpeg" alt="Memory 6">
+                    </div>
+                    <div class="page-back">
+                        <img src="image7.jpeg" alt="Memory 7">
+                    </div>
+                </div>
+
+                <!-- Page 5 (Image 8 / End Cover) -->
+                <div class="book-page" style="z-index: 1;" onclick="turnPage(this, 5)">
+                    <div class="page-front">
+                        <img src="image8.jpeg" alt="Memory 8">
+                    </div>
+                    <div class="page-back">
+                        <div class="cover-title" style="font-size: 1.2rem;">To many more chapters with you... ❤️</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
         <button class="btn-lavender" onclick="nextPage(3)">Continue →</button>
         <button class="btn-back" onclick="nextPage(1)">← Back</button>
     </section>
 
+    <!-- P3: REFLECTIONS -->
     <section id="p3" class="page">
         <h1>Five Reflections</h1>
         <div class="reasons-container">
@@ -175,21 +314,20 @@
         <button class="btn-back" onclick="nextPage(2)">← Back</button>
     </section>
 
+    <!-- P4: ESSAY LETTER -->
     <section id="p4" class="page">
         <div class="essay-box">
             <h2 style="font-family: 'Playfair Display'; margin-bottom: 25px; color: var(--rose); font-style: italic;">To the love of my life,</h2>
             <div id="essay-text">
                 Happy 21st Birthday my loveeeee…
 
-Enick nalla veshamam ond nyan ninte koode ippa illathond.. nyan nthokke cheythaalum nthokke medich thannaalum enick ariya I wont be able to make up for this aenn.. but enick pattana reethiyil ninte ee birthday nalla special aakanam aenn ondaarn.. I rlly hope nink ithokke ishtapedum aenn.. 
+                Enick nalla veshamam ond nyan ninte koode ippa illathond.. nyan nthokke cheythaalum nthokke medich thannaalum enick ariya I wont be able to make up for this aenn.. but enick pattana reethiyil ninte ee birthday nalla special aakanam aenn ondaarn.. I rlly hope nink ithokke ishtapedum aenn.. 
 
-Thank you soo much for always being here with me through thick and thin.. enick sherikkum vere aarum koode illaarnappo aahn nee vannee.. sherikkum ente bayangara oru down time il aahn nee oru angel pole ente life ileck varane.. literally ninnod samsaaricha ann thott nyan bayangara happy aarn.. mentally and physically nalla energetic um aayi.. athrem valya influence aahn ninak nte life il olle.. I hope ninakum nyan kaaranam engthelum okke gunam ondaayenn vishwasickam.. I rlly don’t know how to express this to you.. athrem happy aayittolla oru phase aahn enick nee ollond mathram.. ethrayo good changes ondaayittond nte life il.. 
+                Thank you soo much for always being here with me through thick and thin.. enick sherikkum vere aarum koode illaarnappo aahn nee vannee.. sherikkum ente bayangara oru down time il aahn nee oru angel pole ente life ileck varane.. literally ninnod samsaaricha ann thott nyan bayangara happy aarn.. mentally and physically nalla energetic um aayi.. athrem valya influence aahn ninak nte life il olle.. I hope ninakum nyan kaaranam engthelum okke gunam ondaayenn vishwasickam.. I rlly don’t know how to express this to you.. athrem happy aayittolla oru phase aahn enick nee ollond mathram.. ethrayo good changes ondaayittond nte life il.. 
 
-I hope in the come days months nd years tht I can also repay u everything that you have done for me.. I know this is nothing and just a small gift from me to you..  
+                I hope in the come days months nd years tht I can also repay u everything that you have done for me.. I know this is nothing and just a small gift from me to you..  
 
-From yours and yours only Gramavasi 🤭🤭
-
-
+                From yours and yours only Gramavasi 🤭🤭
 
                 <div class="closing-wish">
                     Once again, Happy Birthday! <br>
@@ -202,16 +340,48 @@ From yours and yours only Gramavasi 🤭🤭
     </section>
 
     <script>
+        // --- MAGAZINE CONTROL LOGIC ---
+        function turnPage(pageElement, pageNum) {
+            const book = document.getElementById('magazine');
+            
+            if (!pageElement.classList.contains('flipped')) {
+                // Flip Forward (Leftward movement)
+                pageElement.classList.add('flipped');
+                
+                // Adjust z-indexing immediately after flip so layers don't clip through
+                setTimeout(() => {
+                    pageElement.style.zIndex = pageNum;
+                }, 150);
+
+                // Center shifts when book opens or moves deeper
+                if(pageNum === 1) {
+                    book.style.transform = "translateX(0%)";
+                }
+            } else {
+                // Flip Backward (Rightward movement)
+                pageElement.classList.remove('flipped');
+                
+                // Return index priority when closing back over
+                setTimeout(() => {
+                    pageElement.style.zIndex = 10 - pageNum;
+                }, 150);
+
+                if(pageNum === 1) {
+                    book.style.transform = "translateX(25%)";
+                }
+            }
+            // Trigger quick cute burst on page turn
+            confetti({ particleCount: 15, spread: 40, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
+        }
+
         function checkPassword() {
             const input = document.getElementById('passwordField').value.toLowerCase().trim();
             const errorDisplay = document.getElementById('error-msg');
             
             if (input === 'benjamin') {
-                // Correct password immediately unlocks everything
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
                 nextPage(1);
             } else {
-                // Wrong password animation remains
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Nice try, but that's not it! 😂";
                 gsap.to(errorDisplay, { opacity: 1, duration: 0.3 });
@@ -255,7 +425,7 @@ From yours and yours only Gramavasi 🤭🤭
         animate();
 
         function handleGlobalClick(e) {
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card')) {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card') && !e.target.closest('.book-page')) {
                 confetti({ particleCount: 8, startVelocity: 15, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'] });
             }
         }

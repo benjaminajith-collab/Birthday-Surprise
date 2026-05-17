@@ -60,75 +60,6 @@
             margin-bottom: 24px;
         }
 
-        /* --- AESTHETIC GLASSMORPHIC COUNTDOWN OVERLAY --- */
-        #countdown-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(31, 16, 48, 0.98) 0%, rgba(15, 12, 19, 1) 100%);
-            z-index: 9999;
-            display: none; 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-
-        .timer-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .time-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(177, 156, 217, 0.15);
-            border-radius: 20px;
-            padding: 24px 20px;
-            min-width: 95px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 
-                        inset 0 1px 0 rgba(255,255,255,0.05);
-        }
-
-        .time-num {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.4rem, 5vw, 3.8rem);
-            color: var(--rose);
-            display: block;
-            font-weight: 400;
-            line-height: 1;
-        }
-
-        .time-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            opacity: 0.5;
-            margin-top: 10px;
-            display: block;
-            font-weight: 500;
-        }
-
-        .timer-separator {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: var(--lavender-glow);
-            margin: 0 10px;
-            opacity: 0.3;
-            animation: pulse 1.5s infinite alternate;
-            padding-bottom: 28px;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.2; }
-            100% { opacity: 0.5; }
-        }
-
         /* Input Styles */
         .pw-input {
             background: rgba(255, 255, 255, 0.03);
@@ -185,14 +116,14 @@
         }
         .btn-back:hover { opacity: 0.9; }
 
-        /* --- MAGAZINE BOOK STYLES --- */
+        /* --- MAGAZINE BOOK STYLES (VERTICAL FLIP) --- */
         .magazine-wrapper {
-            perspective: 1500px;
-            width: 100%;
-            max-width: 800px;
-            height: 50vh;
-            max-height: 500px;
-            margin: 25px 0;
+            perspective: 2000px;
+            width: 90%;
+            max-width: 420px; 
+            height: 42vh;
+            max-height: 400px;
+            margin: 20px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -200,11 +131,11 @@
 
         .book {
             position: relative;
-            width: 50%; 
+            width: 100%; 
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.5s;
-            transform: translateX(25%); 
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(22%); 
         }
 
         .book-page {
@@ -213,7 +144,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            transform-origin: left center;
+            transform-origin: center top; 
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.8s;
             cursor: pointer;
@@ -230,22 +161,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
-            border-radius: 0 12px 12px 0;
+            padding: 10px;
+            border-radius: 0 0 14px 14px; 
         }
 
         .page-front.album-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
         .page-back.album-back-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
 
-        .cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.6); display: flex; justify-content: center; align-items: center; border-radius: 0 11px 11px 0; }
-        .back-cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.6); display: flex; justify-content: center; align-items: center; border-radius: 11px 0 0 11px; }
+        .cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 0 0 13px 13px; }
+        .back-cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 13px 13px 0 0; }
 
-        .page-back { transform: rotateY(180deg); border-radius: 12px 0 0 12px; background: linear-gradient(135deg, #0d061a, #181127); }
-        .page-front::after { content: ''; position: absolute; left: 0; top: 0; width: 12px; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.4), transparent); }
-        .page-back::after { content: ''; position: absolute; right: 0; top: 0; width: 12px; height: 100%; background: linear-gradient(to left, rgba(0,0,0,0.4), transparent); }
+        .page-back { 
+            transform: rotateX(180deg); 
+            border-radius: 14px 14px 0 0; 
+            background: linear-gradient(135deg, #0d061a, #181127); 
+        }
+        
+        .page-front::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 12px; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
+        .page-back::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 12px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); }
 
-        .book-page img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
-        .book-page.flipped { transform: rotateY(-180deg); }
+        .book-page img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+        .book-page.flipped { transform: rotateX(-180deg); }
         
         .cover-title { 
             font-family: 'Playfair Display', serif; 
@@ -259,18 +195,9 @@
             z-index: 2; 
         }
 
-        /* --- TARGETED MOBILE ADJUSTMENTS FOR THE ALBUM --- */
-        @media (max-width: 767px) {
+        @media (max-width: 480px) {
             .magazine-wrapper {
-                height: 45vh; 
-                margin: 15px 0;
-            }
-            .book {
-                width: 75%; 
-                transform: translateX(0%); 
-            }
-            .page-front, .page-back {
-                padding: 8px; 
+                height: 38vh;
             }
         }
 
@@ -409,6 +336,8 @@
 </head>
 <body onclick="handleGlobalClick(event)">
 
+    <canvas id="particle-canvas"></canvas>
+
     <!-- P0: LOGIN GATE -->
     <section id="p0" class="page active">
         <div id="login-content">
@@ -416,28 +345,10 @@
             <h1 style="font-size: 2.2rem; margin-bottom: 0;">a portal to our universe</h1>
             <input type="password" id="passwordField" class="pw-input" placeholder="Enter password..." autocomplete="off">
             <div id="error-msg"></div>
-            <p class="hint" style="font-size: 0.7rem; opacity: 0.3; margin-top: 15px; letter-spacing: 1px;" id="login-hint">Hint: Your boyfriend's first name</p>
-            <button class="btn-lavender" id="unlock-btn" onclick="checkPassword()">Unlock</button>
+            <p class="hint" style="font-size: 0.7rem; opacity: 0.3; margin-top: 15px; letter-spacing: 1px;">Hint: Your boyfriend's first name</p>
+            <button class="btn-lavender" onclick="checkPassword()">Unlock</button>
         </div>
     </section>
-
-    <!-- AESTHETIC COUNTDOWN SCREEN -->
-    <div id="countdown-overlay">
-        <p style="letter-spacing: 6px; color: var(--lavender-glow); text-transform: uppercase; font-size: 0.65rem; margin-bottom: 16px; font-weight: 500;">Sequence Initiated</p>
-        <h2 style="font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(1.6rem, 4vw, 2.4rem); max-width: 500px; font-style: italic; text-transform: lowercase;">a beautiful space is unlocking soon...</h2>
-        
-        <div class="timer-wrapper">
-            <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">Days</span></div>
-            <div class="timer-separator">:</div>
-            <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">Hours</span></div>
-            <div class="timer-separator">:</div>
-            <div class="time-box"><span class="time-num" id="minutes">00</span><span class="time-label">Mins</span></div>
-            <div class="timer-separator">:</div>
-            <div class="time-box"><span class="time-num" id="seconds">00</span><span class="time-label">Secs</span></div>
-        </div>
-    </div>
-
-    <canvas id="particle-canvas"></canvas>
 
     <!-- P1: WELCOME SCREEN -->
     <section id="p1" class="page">
@@ -450,7 +361,7 @@
     <!-- P2: MAGAZINE BOOK BLOCK -->
     <section id="p2" class="page">
         <h1>moments we shared</h1>
-        <p style="font-size: 0.65rem; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;">Tap pages to flip through</p>
+        <p style="font-size: 0.65rem; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;">Tap pages to flip up</p>
         
         <div class="magazine-wrapper">
             <div class="book" id="magazine">
@@ -620,65 +531,18 @@
     </section>
 
     <script>
-        // TEMPORARILY SET TO A PAST DATE FOR PREVIEWING/TESTING
-        const targetDate = new Date("May 1, 2026 00:00:00").getTime();
-        let countdownInterval;
-        let isUnlocked = false;
-
-        // --- PASSWORD CHECK & INITIALIZATION ---
+        // --- PASSWORD CHECK (COUNTDOWN REMOVED COMPLETELY) ---
         function checkPassword() {
             const input = document.getElementById('passwordField').value.toLowerCase().trim();
             const errorDisplay = document.getElementById('error-msg');
             
             if (input === 'benjamin') {
-                isUnlocked = true;
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                
-                const now = new Date().getTime();
-                if (targetDate - now > 0) {
-                    const overlay = document.getElementById("countdown-overlay");
-                    overlay.style.display = "flex";
-                    setTimeout(() => { overlay.style.opacity = "1"; }, 50);
-                    startCountdown();
-                } else {
-                    nextPage(1);
-                }
+                nextPage(1); // Direct jump to welcome page
             } else {
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Please try again.";
                 gsap.to(errorDisplay, { opacity: 0.8, duration: 0.3 });
-            }
-        }
-
-        // --- COUNTDOWN LIVE PROCESSING ---
-        function startCountdown() {
-            updateCountdownValues(); 
-            countdownInterval = setInterval(updateCountdownValues, 1000);
-        }
-
-        function updateCountdownValues() {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = String(d).padStart(2, '0');
-            document.getElementById("hours").innerText = String(h).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(m).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(s).padStart(2, '0');
-
-            if (difference <= 0) {
-                clearInterval(countdownInterval);
-                const overlay = document.getElementById("countdown-overlay");
-                overlay.style.opacity = "0";
-                setTimeout(() => {
-                    overlay.style.visibility = "hidden";
-                    overlay.style.display = "none";
-                    nextPage(1); 
-                }, 800);
             }
         }
 
@@ -696,26 +560,23 @@
              }});
         }
 
-        // --- BOOK CONTROL LOGIC (UPDATED WITH MOBILE COMPATIBILITY FIX) ---
+        // --- BOOK CONTROL LOGIC (VERTICAL NOTEPAD FLIP) ---
         function turnPage(pageElement, pageNum) {
             const book = document.getElementById('magazine');
-            const isMobile = window.innerWidth < 768;
 
             if (!pageElement.classList.contains('flipped')) {
                 pageElement.classList.add('flipped');
                 setTimeout(() => { pageElement.style.zIndex = pageNum; }, 150);
                 
-                // Only shift horizontally on desktop layout
-                if (pageNum === 1 && !isMobile) { 
-                    book.style.transform = "translateX(0%)"; 
+                if (pageNum === 1) { 
+                    book.style.transform = "translateY(-22%)"; 
                 }
             } else {
                 pageElement.classList.remove('flipped');
                 setTimeout(() => { pageElement.style.zIndex = 10 - pageNum; }, 150);
                 
-                // Only shift horizontally on desktop layout
-                if (pageNum === 1 && !isMobile) { 
-                    book.style.transform = "translateX(25%)"; 
+                if (pageNum === 1) { 
+                    book.style.transform = "translateY(22%)"; 
                 }
             }
             confetti({ particleCount: 12, spread: 35, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
@@ -745,8 +606,6 @@
         animate();
 
         function handleGlobalClick(e) {
-            const overlay = document.getElementById('countdown-overlay');
-            if (overlay.style.display === 'flex') return; 
             if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card') && !e.target.closest('.book-page')) {
                 confetti({ particleCount: 6, startVelocity: 12, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'] });
             }

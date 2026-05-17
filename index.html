@@ -262,19 +262,15 @@
         /* --- TARGETED MOBILE ADJUSTMENTS FOR THE ALBUM --- */
         @media (max-width: 767px) {
             .magazine-wrapper {
-                height: 45vh; /* Slightly shorter to leave adequate space for text/buttons on mobile devices */
+                height: 45vh; 
                 margin: 15px 0;
             }
             .book {
-                width: 75%; /* Allocates more screen real estate to the picture frame */
-                transform: translateX(0%); /* Keeps the layout completely anchored to the center grid */
-            }
-            /* Overriding script mechanics natively via CSS to enforce an elegant center rotation on narrow displays */
-            #magazine[style] {
-                transform: translateX(0%) !important;
+                width: 75%; 
+                transform: translateX(0%); 
             }
             .page-front, .page-back {
-                padding: 8px; /* Slightly thinner margins so images take maximum priority */
+                padding: 8px; 
             }
         }
 
@@ -326,7 +322,6 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.35);
         }
         
-        /* Front Design - Clean, Centered & Minimalist */
         .card-front { 
             background: linear-gradient(135deg, #161024, #0a0512); 
             border: 1px solid rgba(177, 156, 217, 0.2);
@@ -344,7 +339,6 @@
             margin: 0;
         }
 
-        /* Back Design */
         .card-back { 
             background: linear-gradient(145deg, #231640, #0f0a1c); 
             color: #f1ebfc; 
@@ -702,17 +696,27 @@
              }});
         }
 
-        // --- BOOK CONTROL LOGIC ---
+        // --- BOOK CONTROL LOGIC (UPDATED WITH MOBILE COMPATIBILITY FIX) ---
         function turnPage(pageElement, pageNum) {
             const book = document.getElementById('magazine');
+            const isMobile = window.innerWidth < 768;
+
             if (!pageElement.classList.contains('flipped')) {
                 pageElement.classList.add('flipped');
                 setTimeout(() => { pageElement.style.zIndex = pageNum; }, 150);
-                if(pageNum === 1) { book.style.transform = "translateX(0%)"; }
+                
+                // Only shift horizontally on desktop layout
+                if (pageNum === 1 && !isMobile) { 
+                    book.style.transform = "translateX(0%)"; 
+                }
             } else {
                 pageElement.classList.remove('flipped');
                 setTimeout(() => { pageElement.style.zIndex = 10 - pageNum; }, 150);
-                if(pageNum === 1) { book.style.transform = "translateX(25%)"; }
+                
+                // Only shift horizontally on desktop layout
+                if (pageNum === 1 && !isMobile) { 
+                    book.style.transform = "translateX(25%)"; 
+                }
             }
             confetti({ particleCount: 12, spread: 35, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
         }

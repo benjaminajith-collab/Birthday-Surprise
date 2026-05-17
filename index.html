@@ -26,14 +26,14 @@
             animation: gradientSwirl 15s ease infinite;
             color: var(--lavender); 
             font-family: 'Inter', sans-serif; 
-            overflow: hidden; 
-            height: 100vh;
+            overflow-x: hidden;
+            min-height: 100vh;
             -webkit-font-smoothing: antialiased;
         }
 
         #particle-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.5;
+            z-index: -1; opacity: 0.5; pointer-events: none;
         }
 
         @keyframes gradientSwirl {
@@ -43,10 +43,12 @@
         }
 
         .page {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            padding: 20px; text-align: center;
+            padding: 30px 20px; text-align: center;
         }
+        /* Page 2 contains the scrollable grid, so it needs normal height handling */
+        #p2 { position: relative; min-height: 100vh; justify-content: flex-start; }
         .active { display: flex; }
 
         h1 { 
@@ -98,6 +100,7 @@
             padding: 14px 40px; border-radius: 50px; cursor: pointer;
             font-weight: 500; letter-spacing: 3px; transition: all 0.4s ease; margin-top: 30px;
             text-transform: uppercase; font-size: 0.7rem;
+            flex-shrink: 0;
         }
         .btn-lavender:hover {
             background: white;
@@ -111,94 +114,96 @@
             border: none; opacity: 0.5;
             padding: 8px 20px; cursor: pointer;
             font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 20px; transition: 0.3s;
+            margin-top: 15px; transition: 0.3s;
             z-index: 10;
         }
         .btn-back:hover { opacity: 0.9; }
 
-        /* --- MAGAZINE BOOK STYLES (VERTICAL FLIP) --- */
-        .magazine-wrapper {
-            perspective: 2000px;
-            width: 90%;
-            max-width: 420px; 
-            height: 42vh;
-            max-height: 400px;
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .book {
-            position: relative;
-            width: 100%; 
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            transform: translateY(22%); 
-        }
-
-        .book-page {
-            position: absolute;
+        /* --- INTERACTIVE CAROUSEL VIEW --- */
+        .viewer-container {
             width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform-origin: center top; 
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.8s;
+            max-width: 360px;
+            height: 380px;
+            position: relative;
+            margin: 15px 0;
             cursor: pointer;
         }
 
-        .page-front, .page-back {
-            position: absolute;
+        .viewer-frame {
             width: 100%;
             height: 100%;
-            backface-visibility: hidden;
-            background: linear-gradient(135deg, #181127, #0d061a);
-            border: 1px solid rgba(177, 156, 217, 0.2);
-            box-shadow: inset 0 0 35px rgba(0,0,0,0.6), 5px 15px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(177, 156, 217, 0.25);
+            border-radius: 20px;
+            padding: 12px;
+            background: rgba(20, 15, 30, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewer-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            position: absolute;
+            top: 0; left: 0;
+            padding: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .viewer-img.current {
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
+        }
+
+        .album-cover-overlay {
+            position: absolute;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            background: rgba(15, 12, 19, 0.6);
+            border-radius: 12px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            border-radius: 0 0 14px 14px; 
+            padding: 20px;
+            z-index: 2;
         }
 
-        .page-front.album-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
-        .page-back.album-back-cover { background-repeat: no-repeat; background-position: center center; background-size: cover; padding: 0; }
-
-        .cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 0 0 13px 13px; }
-        .back-cover-overlay { width: 100%; height: 100%; background: rgba(15, 12, 19, 0.55); display: flex; justify-content: center; align-items: center; border-radius: 13px 13px 0 0; }
-
-        .page-back { 
-            transform: rotateX(180deg); 
-            border-radius: 14px 14px 0 0; 
-            background: linear-gradient(135deg, #0d061a, #181127); 
-        }
-        
-        .page-front::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 12px; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
-        .page-back::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 12px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); }
-
-        .book-page img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
-        .book-page.flipped { transform: rotateX(-180deg); }
-        
-        .cover-title { 
-            font-family: 'Playfair Display', serif; 
-            color: var(--lavender); 
-            font-size: 1.6rem; 
-            font-style: italic;
-            font-weight: 400;
-            padding: 20px; 
-            line-height: 1.4;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9); 
-            z-index: 2; 
+        /* --- THE ALL-TOGETHER GRID VIEW --- */
+        .collective-grid {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 480px;
+            margin: 20px 0;
+            padding: 0 10px;
         }
 
-        @media (max-width: 480px) {
-            .magazine-wrapper {
-                height: 38vh;
-            }
+        .grid-item {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(177, 156, 217, 0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .grid-item:hover img {
+            transform: scale(1.05);
         }
 
         /* --- REFLECTION CARDS --- */
@@ -222,9 +227,7 @@
             transform-style: preserve-3d; 
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .card:hover {
-            transform: translateY(-8px);
-        }
+        .card:hover { transform: translateY(-8px); }
         
         .card-inner { 
             position: relative; 
@@ -263,7 +266,6 @@
             font-weight: 400;
             letter-spacing: 0.5px;
             text-transform: lowercase;
-            margin: 0;
         }
 
         .card-back { 
@@ -358,73 +360,47 @@
         <button class="btn-lavender" onclick="nextPage(2)">Begin the Journey</button>
     </section>
 
-    <!-- P2: MAGAZINE BOOK BLOCK -->
+    <!-- P2: INTERACTIVE MEMORIES & GRID REVEAL -->
     <section id="p2" class="page">
-        <h1>moments we shared</h1>
-        <p style="font-size: 0.65rem; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;">Tap pages to flip up</p>
+        <h1 id="gallery-heading" style="margin-top: 20px;">moments we shared</h1>
+        <p id="gallery-counter" style="font-size: 0.65rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px;">Tap the frame to open</p>
         
-        <div class="magazine-wrapper">
-            <div class="book" id="magazine">
+        <!-- Sequential Tapping Viewer -->
+        <div class="viewer-container" id="album-viewer" onclick="advancePhoto()">
+            <div class="viewer-frame">
                 
-                <!-- Page 1 -->
-                <div class="book-page" style="z-index: 5;" onclick="turnPage(this, 1)">
-                    <div class="page-front album-cover" style="background-image: url('image9.jpeg');">
-                        <div class="cover-overlay">
-                            <div class="cover-title">Our Album<br><span style="font-size:0.8rem; opacity:0.6; letter-spacing: 2px; text-transform: uppercase; font-family: 'Inter'; font-style: normal; display:block; margin-top:10px;">✨ Open ✨</span></div>
-                        </div>
-                    </div>
-                    <div class="page-back">
-                        <img src="image1.jpeg" alt="Memory 1">
-                    </div>
+                <!-- Track Overlay For Cover Page -->
+                <div class="album-cover-overlay" id="cover-overlay" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('image9.jpeg'); background-size: cover; background-position: center;">
+                    <div style="font-family: 'Playfair Display', serif; font-size: 1.7rem; font-style: italic; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Our Album</div>
+                    <span style="font-size:0.65rem; opacity:0.7; letter-spacing: 3px; text-transform: uppercase; font-family: 'Inter'; display:block; margin-top:15px; background: rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 30px; backdrop-filter: blur(5px);">✨ Tap to Open ✨</span>
                 </div>
 
-                <!-- Page 2 -->
-                <div class="book-page" style="z-index: 4;" onclick="turnPage(this, 2)">
-                    <div class="page-front">
-                        <img src="image2.jpeg" alt="Memory 2">
-                    </div>
-                    <div class="page-back">
-                        <img src="image3.jpeg" alt="Memory 3">
-                    </div>
-                </div>
-
-                <!-- Page 3 -->
-                <div class="book-page" style="z-index: 3;" onclick="turnPage(this, 3)">
-                    <div class="page-front">
-                        <img src="image4.jpeg" alt="Memory 4">
-                    </div>
-                    <div class="page-back">
-                        <img src="image5.jpeg" alt="Memory 5">
-                    </div>
-                </div>
-
-                <!-- Page 4 -->
-                <div class="book-page" style="z-index: 2;" onclick="turnPage(this, 4)">
-                    <div class="page-front">
-                        <img src="image6.jpeg" alt="Memory 6">
-                    </div>
-                    <div class="page-back">
-                        <img src="image7.jpeg" alt="Memory 7">
-                    </div>
-                </div>
-
-                <!-- Page 5 -->
-                <div class="book-page" style="z-index: 1;" onclick="turnPage(this, 5)">
-                    <div class="page-front">
-                        <img src="image8.jpeg" alt="Memory 8">
-                    </div>
-                    <div class="page-back album-back-cover" style="background-image: url('image10.jpeg');">
-                        <div class="back-cover-overlay">
-                            <div class="cover-title" style="font-size: 1.1rem;">To many more chapters with you... ❤️</div>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- Inner Memory Photos -->
+                <img src="image1.jpeg" class="viewer-img current" alt="Memory 1">
+                <img src="image2.jpeg" class="viewer-img" alt="Memory 2">
+                <img src="image3.jpeg" class="viewer-img" alt="Memory 3">
+                <img src="image4.jpeg" class="viewer-img" alt="Memory 4">
+                <img src="image5.jpeg" class="viewer-img" alt="Memory 5">
+                <img src="image6.jpeg" class="viewer-img" alt="Memory 6">
+                <img src="image7.jpeg" class="viewer-img" alt="Memory 7">
+                <img src="image8.jpeg" class="viewer-img" alt="Memory 8">
             </div>
         </div>
 
+        <!-- Hidden Grid Block (Revealed together at the end) -->
+        <div class="collective-grid" id="all-photos-grid">
+            <div class="grid-item"><img src="image1.jpeg" alt="Memory 1"></div>
+            <div class="grid-item"><img src="image2.jpeg" alt="Memory 2"></div>
+            <div class="grid-item"><img src="image3.jpeg" alt="Memory 3"></div>
+            <div class="grid-item"><img src="image4.jpeg" alt="Memory 4"></div>
+            <div class="grid-item"><img src="image5.jpeg" alt="Memory 5"></div>
+            <div class="grid-item"><img src="image6.jpeg" alt="Memory 6"></div>
+            <div class="grid-item"><img src="image7.jpeg" alt="Memory 7"></div>
+            <div class="grid-item"><img src="image8.jpeg" alt="Memory 8"></div>
+        </div>
+
         <button class="btn-lavender" onclick="nextPage(3)">Continue →</button>
-        <button class="btn-back" onclick="nextPage(1)">← Back</button>
+        <button class="btn-back" onclick="resetGalleryAndGoBack()">← Back</button>
     </section>
 
     <!-- P3: REFLECTIONS -->
@@ -433,72 +409,56 @@
         <p style="font-size: 0.65rem; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">Tap cards to reveal pieces of you</p>
         
         <div class="reasons-container">
-            
             <!-- Card 1 -->
             <div class="card" onclick="flipCard(this)">
                 <div class="card-inner">
-                    <div class="card-front">
-                        <h3>the daily spark</h3>
-                    </div>
+                    <div class="card-front"><h3>the daily spark</h3></div>
                     <div class="card-back">
                         <p>The way you make me smile everyday.</p>
                         <span class="card-back-footer">Reason One</span>
                     </div>
                 </div>
             </div>
-
             <!-- Card 2 -->
             <div class="card" onclick="flipCard(this)">
                 <div class="card-inner">
-                    <div class="card-front">
-                        <h3>the safe haven</h3>
-                    </div>
+                    <div class="card-front"><h3>the safe haven</h3></div>
                     <div class="card-back">
                         <p>Your comforting texts during my down times.</p>
                         <span class="card-back-footer">Reason Two</span>
                     </div>
                 </div>
             </div>
-
             <!-- Card 3 -->
             <div class="card" onclick="flipCard(this)">
                 <div class="card-inner">
-                    <div class="card-front">
-                        <h3>the audio therapy</h3>
-                    </div>
+                    <div class="card-front"><h3>the audio therapy</h3></div>
                     <div class="card-back">
                         <p>How comforting your voice is.</p>
                         <span class="card-back-footer">Reason Three</span>
                     </div>
                 </div>
             </div>
-
             <!-- Card 4 -->
             <div class="card" onclick="flipCard(this)">
                 <div class="card-inner">
-                    <div class="card-front">
-                        <h3>the perfect sync</h3>
-                    </div>
+                    <div class="card-front"><h3>the perfect sync</h3></div>
                     <div class="card-back">
                         <p>The way you understand everything that i have to convey to you.</p>
                         <span class="card-back-footer">Reason Four</span>
                     </div>
                 </div>
             </div>
-
             <!-- Card 5 -->
             <div class="card" onclick="flipCard(this)">
                 <div class="card-inner">
-                    <div class="card-front">
-                        <h3>the good different</h3>
-                    </div>
+                    <div class="card-front"><h3>the good different</h3></div>
                     <div class="card-back">
                         <p>The way you are unique from everyone else—the good different.</p>
                         <span class="card-back-footer">Reason Five</span>
                     </div>
                 </div>
             </div>
-
         </div>
         
         <button class="btn-lavender" onclick="nextPage(4)">My Final Letter</button>
@@ -531,14 +491,18 @@
     </section>
 
     <script>
-        // --- PASSWORD CHECK (COUNTDOWN REMOVED COMPLETELY) ---
+        let currentPhotoIndex = 0;
+        const totalPhotos = 8;
+        let coverOpened = false;
+
+        // --- PASSWORD GATE CHECK ---
         function checkPassword() {
             const input = document.getElementById('passwordField').value.toLowerCase().trim();
             const errorDisplay = document.getElementById('error-msg');
             
             if (input === 'benjamin') {
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                nextPage(1); // Direct jump to welcome page
+                nextPage(1);
             } else {
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Please try again.";
@@ -560,26 +524,77 @@
              }});
         }
 
-        // --- BOOK CONTROL LOGIC (VERTICAL NOTEPAD FLIP) ---
-        function turnPage(pageElement, pageNum) {
-            const book = document.getElementById('magazine');
+        // --- PHOTO SEQUENCING & REVEAL SYSTEM ---
+        function advancePhoto() {
+            const cover = document.getElementById('cover-overlay');
+            const counter = document.getElementById('gallery-counter');
+            const images = document.querySelectorAll('.viewer-img');
 
-            if (!pageElement.classList.contains('flipped')) {
-                pageElement.classList.add('flipped');
-                setTimeout(() => { pageElement.style.zIndex = pageNum; }, 150);
-                
-                if (pageNum === 1) { 
-                    book.style.transform = "translateY(-22%)"; 
-                }
-            } else {
-                pageElement.classList.remove('flipped');
-                setTimeout(() => { pageElement.style.zIndex = 10 - pageNum; }, 150);
-                
-                if (pageNum === 1) { 
-                    book.style.transform = "translateY(22%)"; 
-                }
+            // 1. Handle Cover Page Removal
+            if (!coverOpened) {
+                coverOpened = true;
+                gsap.to(cover, { opacity: 0, scale: 0.9, duration: 0.4, onComplete: () => cover.style.display = 'none' });
+                counter.innerText = `Photo 1 of ${totalPhotos} (Tap to change)`;
+                confetti({ particleCount: 15, spread: 40, colors: ['#FAD0DD', '#B19CD9'] });
+                return;
             }
-            confetti({ particleCount: 12, spread: 35, origin: { y: 0.65 }, colors: ['#FAD0DD', '#B19CD9'] });
+
+            // 2. Handle Cycle Through Individual Images
+            if (currentPhotoIndex < totalPhotos - 1) {
+                images[currentPhotoIndex].classList.remove('current');
+                currentPhotoIndex++;
+                images[currentPhotoIndex].classList.add('current');
+                counter.innerText = `Photo ${currentPhotoIndex + 1} of ${totalPhotos} (Tap to change)`;
+                
+                confetti({ particleCount: 8, startVelocity: 15, spread: 30, colors: ['#FAD0DD', '#B19CD9'] });
+            } 
+            // 3. Reached the end -> Transform Single Frame into Complete Collective Grid
+            else {
+                const viewer = document.getElementById('album-viewer');
+                const grid = document.getElementById('all-photos-grid');
+                const heading = document.getElementById('gallery-heading');
+
+                counter.innerText = "our collective canvas";
+                heading.innerText = "all our memories";
+
+                // Fade out single item frame, drop in full layout block dynamically
+                gsap.to(viewer, { opacity: 0, scale: 0.9, duration: 0.4, onComplete: () => {
+                    viewer.style.display = 'none';
+                    grid.style.display = 'grid';
+                    gsap.fromTo(grid, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6 });
+                    confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 } });
+                }});
+            }
+        }
+
+        // Clean-up reset loop if they click back out to start page
+        function resetGalleryAndGoBack() {
+            currentPhotoIndex = 0;
+            coverOpened = false;
+            
+            const cover = document.getElementById('cover-overlay');
+            const viewer = document.getElementById('album-viewer');
+            const grid = document.getElementById('all-photos-grid');
+            const counter = document.getElementById('gallery-counter');
+            const heading = document.getElementById('gallery-heading');
+            const images = document.querySelectorAll('.viewer-img');
+
+            images.forEach((img, idx) => {
+                img.classList.remove('current');
+                if(idx === 0) img.classList.add('current');
+            });
+
+            cover.style.display = 'flex';
+            cover.style.opacity = '1';
+            cover.style.transform = 'scale(1)';
+            viewer.style.display = 'block';
+            viewer.style.opacity = '1';
+            viewer.style.transform = 'scale(1)';
+            grid.style.display = 'none';
+            counter.innerText = "Tap the frame to open";
+            heading.innerText = "moments we shared";
+
+            nextPage(1);
         }
 
         function flipCard(card) {
@@ -593,7 +608,7 @@
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         let pArray = [];
-        for (let i = 0; i < 50; i++) pArray.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5, o: Math.random()*0.4 });
+        for (let i = 0; i < 40; i++) pArray.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.5, o: Math.random()*0.4 });
         function animate() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
             pArray.forEach(p => {
@@ -606,7 +621,7 @@
         animate();
 
         function handleGlobalClick(e) {
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card') && !e.target.closest('.book-page')) {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT' && !e.target.closest('.card') && !e.target.closest('.viewer-container') && !e.target.closest('.grid-item')) {
                 confetti({ particleCount: 6, startVelocity: 12, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight }, colors: ['#FAD0DD', '#B19CD9'] });
             }
         }

@@ -71,43 +71,6 @@
             width: 250px;
         }
 
-        /* Countdown Display */
-        #countdown-container {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            border: 1px solid var(--rose);
-            backdrop-filter: blur(10px);
-        }
-
-        .timer-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .timer-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .timer-val {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--rose);
-            font-family: 'Playfair Display', serif;
-        }
-
-        .timer-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.7;
-        }
-
         #error-msg {
             color: var(--rose);
             font-size: 0.9rem;
@@ -174,18 +137,6 @@
             <p class="hint" id="login-hint">Hint: Your boyfriend's first name</p>
             <button class="btn-lavender" id="unlock-btn" onclick="checkPassword()">Unlock</button>
         </div>
-
-        <div id="countdown-container">
-            <h2 style="font-family: 'Playfair Display'; color: var(--rose);">Patience, Love...</h2>
-            <p style="font-size: 0.9rem; margin-top: 10px;">The password is correct, but the gift arrives in:</p>
-            <div class="timer-grid">
-                <div class="timer-block"><span class="timer-val" id="days">00</span><span class="timer-label">Days</span></div>
-                <div class="timer-block"><span class="timer-val" id="hours">00</span><span class="timer-label">Hours</span></div>
-                <div class="timer-block"><span class="timer-val" id="mins">00</span><span class="timer-label">Mins</span></div>
-                <div class="timer-block"><span class="timer-val" id="secs">00</span><span class="timer-label">Secs</span></div>
-            </div>
-            <p class="hint" style="margin-top: 20px;">I'll see you on May 20th! ❤️</p>
-        </div>
     </section>
 
     <section id="p1" class="page">
@@ -203,21 +154,22 @@
             <img src="image3.jpeg" alt="Memory 3">
             <img src="image4.jpeg" alt="Memory 4">
             <img src="image5.jpeg" alt="Memory 5">
+	    <img src="image6.jpeg" alt="Memory 6">
+            <img src="image7.jpeg" alt="Memory 7">
+            <img src="image8.jpeg" alt="Memory 8">
         </div>
         <button class="btn-lavender" onclick="nextPage(3)">Continue →</button>
         <button class="btn-back" onclick="nextPage(1)">← Back</button>
     </section>
 
     <section id="p3" class="page">
-        <h1>Seven Reflections</h1>
+        <h1>Five Reflections</h1>
         <div class="reasons-container">
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">1</span></div><div class="card-back"><p>The way you always support me and back me.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">2</span></div><div class="card-back"><p>The way you make me feel happy everyday.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">3</span></div><div class="card-back"><p>The comfort you make me feel.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">4</span></div><div class="card-back"><p>Your Smile.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">5</span></div><div class="card-back"><p>Every good morning and good night text feels so special.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">6</span></div><div class="card-back"><p>The way you love and care.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">7</span></div><div class="card-back"><p>Our future together🥹.</p></div></div></div>
+            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">1</span></div><div class="card-back"><p>The way you make me smile everyday.</p></div></div></div>
+            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">2</span></div><div class="card-back"><p>Your comforting texts during my down times.</p></div></div></div>
+            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">3</span></div><div class="card-back"><p>How comforting your voice is.</p></div></div></div>
+            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">4</span></div><div class="card-back"><p>The way you understand everything that i have to convey to you.</p></div></div></div>
+            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">5</span></div><div class="card-back"><p>The way you are unique from everyone else the good different.</p></div></div></div>
         </div>
         <button class="btn-lavender" onclick="nextPage(4)">My Final Letter</button>
         <button class="btn-back" onclick="nextPage(2)">← Back</button>
@@ -227,16 +179,17 @@
         <div class="essay-box">
             <h2 style="font-family: 'Playfair Display'; margin-bottom: 25px; color: var(--rose); font-style: italic;">To the love of my life,</h2>
             <div id="essay-text">
-                Happy 21st Birthday. 
-                
-                Eda enick sherikkum ith kore koode better aayitt cheyyanam aenn ondaarn but like enick exams inte okke therakk aayond aahn enick ith athra nice aayitt cheyyan pattathe… athond ith nyan kore okke ai itt aahn cheythe aake korch text um images um mathre nyan upload cheythollu.. anyways nyan karyathileck varam..
+                Happy 21st Birthday my loveeeee…
 
-                Happiest Birthday my love.. thank you for always being with me throughout and always supporting me through my hardships.. every good morning text from you every good night text and every single text really makes me feel soo happy.. thank you for coming into my life.. you are really the most caring and loving person I feel soo safe when im with you.. I love everything about you love every single thing about you kunjaa..
+Enick nalla veshamam ond nyan ninte koode ippa illathond.. nyan nthokke cheythaalum nthokke medich thannaalum enick ariya I wont be able to make up for this aenn.. but enick pattana reethiyil ninte ee birthday nalla special aakanam aenn ondaarn.. I rlly hope nink ithokke ishtapedum aenn.. 
 
-                I really don’t know what else to say genuinely idk how to express it.. I rlly hope you liked this and I really hope youre happy.. Always stay happy and be urself luv.. ummaaaaaaaa 🥹🥹🥹…
+Thank you soo much for always being here with me through thick and thin.. enick sherikkum vere aarum koode illaarnappo aahn nee vannee.. sherikkum ente bayangara oru down time il aahn nee oru angel pole ente life ileck varane.. literally ninnod samsaaricha ann thott nyan bayangara happy aarn.. mentally and physically nalla energetic um aayi.. athrem valya influence aahn ninak nte life il olle.. I hope ninakum nyan kaaranam engthelum okke gunam ondaayenn vishwasickam.. I rlly don’t know how to express this to you.. athrem happy aayittolla oru phase aahn enick nee ollond mathram.. ethrayo good changes ondaayittond nte life il.. 
 
-                Yours always,
-                Benjuu..
+I hope in the come days months nd years tht I can also repay u everything that you have done for me.. I know this is nothing and just a small gift from me to you..  
+
+From yours and yours only Gramavasi 🤭🤭
+
+
 
                 <div class="closing-wish">
                     Once again, Happy Birthday! <br>
@@ -249,57 +202,20 @@
     </section>
 
     <script>
-        const targetDate = new Date("May 20, 2026 00:00:00").getTime();
-        let timerInterval;
-
         function checkPassword() {
             const input = document.getElementById('passwordField').value.toLowerCase().trim();
             const errorDisplay = document.getElementById('error-msg');
-            const now = new Date().getTime();
             
             if (input === 'benjamin') {
-                if (now < targetDate) {
-                    // CORRECT PASS BUT TOO EARLY
-                    gsap.to("#login-content", { opacity: 0, y: -20, duration: 0.5, onComplete: () => {
-                        document.getElementById('login-content').style.display = 'none';
-                        const container = document.getElementById('countdown-container');
-                        container.style.display = 'block';
-                        gsap.fromTo(container, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
-                        startCountdown();
-                    }});
-                } else {
-                    // BIRTHDAY ARRIVED!
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                    nextPage(1);
-                }
+                // Correct password immediately unlocks everything
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                nextPage(1);
             } else {
-                // WRONG PASS
+                // Wrong password animation remains
                 gsap.fromTo("#passwordField", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.05 });
                 errorDisplay.innerText = "Nice try, but that's not it! 😂";
                 gsap.to(errorDisplay, { opacity: 1, duration: 0.3 });
             }
-        }
-
-        function startCountdown() {
-            timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("days").innerText = d.toString().padStart(2, '0');
-                document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-                document.getElementById("mins").innerText = m.toString().padStart(2, '0');
-                document.getElementById("secs").innerText = s.toString().padStart(2, '0');
-
-                if (distance < 0) {
-                    clearInterval(timerInterval);
-                    location.reload(); // Refresh to unlock
-                }
-            }, 1000);
         }
 
         function nextPage(num) {
@@ -312,7 +228,7 @@
                 next.classList.add('active');
                 gsap.fromTo(next, { opacity: 0, scale: isGoingBack ? 0.9 : 1.1 }, { opacity: 1, scale: 1, duration: 0.6 });
                 if(!isGoingBack && (num === 1 || num === 4)) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-            }});
+             }});
         }
 
         function flipCard(card) {

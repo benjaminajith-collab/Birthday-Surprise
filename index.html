@@ -259,27 +259,113 @@
             z-index: 2; 
         }
 
-        /* --- REASONS & CARDS --- */
-        .reasons-container { display: flex; gap: 30px; overflow-x: auto; width: 100vw; max-width: 1200px; padding: 40px; scrollbar-width: none; perspective: 1000px; }
-        .card { min-width: 260px; height: 360px; position: relative; cursor: pointer; transform-style: preserve-3d; transition: 0.6s; }
-        .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: 0.8s; }
+        /* --- REFLECTION CARDS --- */
+        .reasons-container { 
+            display: flex; 
+            gap: 25px; 
+            overflow-x: auto; 
+            width: 100vw; 
+            max-width: 1300px; 
+            padding: 30px 50px; 
+            scrollbar-width: none; 
+            perspective: 1200px; 
+        }
+        .reasons-container::-webkit-scrollbar { display: none; }
+
+        .card { 
+            min-width: 280px; 
+            height: 380px; 
+            position: relative; 
+            cursor: pointer; 
+            transform-style: preserve-3d; 
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .card-inner { 
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            transform-style: preserve-3d; 
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        }
         .card.flipped .card-inner { transform: rotateY(180deg); }
         
         .card-front, .card-back { 
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; 
-            display: flex; align-items: center; justify-content: center; padding: 35px; 
-            border: 1px solid rgba(177, 156, 217, 0.25); 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            border-radius: 24px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            padding: 30px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
         }
-        .card-front { background: linear-gradient(135deg, #251a3a, #130a1e); }
-        .card-back { 
-            background: linear-gradient(135deg, #53406e, #332349); 
-            color: var(--lavender); 
-            transform: rotateY(180deg); 
-            font-size: 0.95rem;
-            line-height: 1.6;
+        
+        /* Front Design - Clean, Centered & Minimalist */
+        .card-front { 
+            background: linear-gradient(135deg, #161024, #0a0512); 
+            border: 1px solid rgba(177, 156, 217, 0.2);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        .card-front h3 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--lavender);
             font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: lowercase;
+            margin: 0;
         }
-        .card-number { font-family: 'Playfair Display', serif; font-size: 4.5rem; color: var(--rose); font-style: italic; opacity: 0.85; }
+
+        /* Back Design */
+        .card-back { 
+            background: linear-gradient(145deg, #231640, #0f0a1c); 
+            color: #f1ebfc; 
+            transform: rotateY(180deg); 
+            border: 1px solid rgba(250, 208, 221, 0.25);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+            justify-content: space-between;
+            padding: 40px 30px;
+        }
+        
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 12px; bottom: 12px; left: 12px; right: 12px;
+            border: 1px dashed rgba(177, 156, 217, 0.12);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .card-back p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            font-weight: 400;
+            text-align: center;
+            margin: auto;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-back-footer {
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--rose);
+            opacity: 0.4;
+            font-weight: 600;
+        }
 
         /* --- EDITORIAL LETTER BOX --- */
         .essay-box {
@@ -420,13 +506,77 @@
     <!-- P3: REFLECTIONS -->
     <section id="p3" class="page">
         <h1>five reflections</h1>
+        <p style="font-size: 0.65rem; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">Tap cards to reveal pieces of you</p>
+        
         <div class="reasons-container">
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">1</span></div><div class="card-back"><p>The way you make me smile everyday.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">2</span></div><div class="card-back"><p>Your comforting texts during my down times.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">3</span></div><div class="card-back"><p>How comforting your voice is.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">4</span></div><div class="card-back"><p>The way you understand everything that i have to convey to you.</p></div></div></div>
-            <div class="card" onclick="flipCard(this)"><div class="card-inner"><div class="card-front"><span class="card-number">5</span></div><div class="card-back"><p>The way you are unique from everyone else—the good different.</p></div></div></div>
+            
+            <!-- Card 1 -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>the daily spark</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The way you make me smile everyday.</p>
+                        <span class="card-back-footer">Reason One</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>the safe haven</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>Your comforting texts during my down times.</p>
+                        <span class="card-back-footer">Reason Two</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>the audio therapy</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>How comforting your voice is.</p>
+                        <span class="card-back-footer">Reason Three</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>the perfect sync</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The way you understand everything that i have to convey to you.</p>
+                        <span class="card-back-footer">Reason Four</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h3>the good different</h3>
+                    </div>
+                    <div class="card-back">
+                        <p>The way you are unique from everyone else—the good different.</p>
+                        <span class="card-back-footer">Reason Five</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        
         <button class="btn-lavender" onclick="nextPage(4)">My Final Letter</button>
         <button class="btn-back" onclick="nextPage(2)">← Back</button>
     </section>

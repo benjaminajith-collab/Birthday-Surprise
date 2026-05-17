@@ -152,7 +152,8 @@
 
         /* Front cover specific image settings */
         .page-front.album-cover {
-            background: url('image9.jpeg') no-repeat center center;
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
             padding: 0; /* Clear padding to let overlay stretch edge-to-edge */
         }
@@ -262,9 +263,9 @@
         <div class="magazine-wrapper">
             <div class="book" id="magazine">
                 
-                <!-- Page 1 (Cover with background image9.jpeg / Image 1) -->
+                <!-- Page 1 (Cover with explicit inline style linking image9.jpeg) -->
                 <div class="book-page" style="z-index: 5;" onclick="turnPage(this, 1)">
-                    <div class="page-front album-cover">
+                    <div class="page-front album-cover" style="background-image: url('image9.jpeg');">
                         <div class="cover-overlay">
                             <div class="cover-title">Our Album<br><span style="font-size:1rem; opacity:0.8;">✨ Tap to Open ✨</span></div>
                         </div>

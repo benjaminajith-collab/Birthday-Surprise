@@ -259,16 +259,35 @@
             z-index: 2; 
         }
 
+        /* --- TARGETED MOBILE ADJUSTMENTS FOR THE ALBUM --- */
+        @media (max-width: 767px) {
+            .magazine-wrapper {
+                height: 45vh; /* Slightly shorter to leave adequate space for text/buttons on mobile devices */
+                margin: 15px 0;
+            }
+            .book {
+                width: 75%; /* Allocates more screen real estate to the picture frame */
+                transform: translateX(0%); /* Keeps the layout completely anchored to the center grid */
+            }
+            /* Overriding script mechanics natively via CSS to enforce an elegant center rotation on narrow displays */
+            #magazine[style] {
+                transform: translateX(0%) !important;
+            }
+            .page-front, .page-back {
+                padding: 8px; /* Slightly thinner margins so images take maximum priority */
+            }
+        }
+
         /* --- REFLECTION CARDS --- */
         .reasons-container { 
             display: flex; 
             gap: 25px; 
-            overflow-x: auto; 
             width: 100vw; 
             max-width: 1300px; 
             padding: 30px 50px; 
             scrollbar-width: none; 
             perspective: 1200px; 
+            overflow-x: auto;
         }
         .reasons-container::-webkit-scrollbar { display: none; }
 

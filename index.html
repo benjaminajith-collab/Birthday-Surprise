@@ -115,11 +115,10 @@
 
         .book {
             position: relative;
-            width: 50%; /* Single page width, book spans out from center */
+            width: 50%; 
             height: 100%;
             transform-style: preserve-3d;
             transition: transform 0.5s;
-            /* Shifts entire book slightly right so center fold aligns beautifully */
             transform: translateX(25%); 
         }
 
@@ -149,6 +148,24 @@
             align-items: center;
             padding: 10px;
             border-radius: 0 15px 15px 0;
+        }
+
+        /* Front cover specific image settings */
+        .page-front.album-cover {
+            background: url('image9.jpeg') no-repeat center center;
+            background-size: cover;
+            padding: 0; /* Clear padding to let overlay stretch edge-to-edge */
+        }
+
+        /* Semi-transparent dark overlay layer to make text readable over the background image */
+        .cover-overlay {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 12, 19, 0.55); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0 13px 13px 0;
         }
 
         /* Back faces turn around and anchor left */
@@ -186,6 +203,8 @@
             color: var(--rose);
             font-size: 1.8rem;
             padding: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            z-index: 2;
         }
 
         /* --- REASONS & CARDS --- */
@@ -243,10 +262,12 @@
         <div class="magazine-wrapper">
             <div class="book" id="magazine">
                 
-                <!-- Page 1 (Cover / Image 1) -->
+                <!-- Page 1 (Cover with background image9.jpeg / Image 1) -->
                 <div class="book-page" style="z-index: 5;" onclick="turnPage(this, 1)">
-                    <div class="page-front">
-                        <div class="cover-title">Our Album<br><span style="font-size:1rem; opacity:0.6;">✨ Tap to Open ✨</span></div>
+                    <div class="page-front album-cover">
+                        <div class="cover-overlay">
+                            <div class="cover-title">Our Album<br><span style="font-size:1rem; opacity:0.8;">✨ Tap to Open ✨</span></div>
+                        </div>
                     </div>
                     <div class="page-back">
                         <img src="image1.jpeg" alt="Memory 1">
